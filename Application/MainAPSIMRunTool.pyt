@@ -37,6 +37,7 @@ import json
 import re
 import logging
 from subprocess import Popen, PIPE
+import configurationModule
 
 #from pyproj import transform, CRS, Transformer                    
 class Toolbox(object):
@@ -92,7 +93,7 @@ class APSIMCropSimulationTool(object):
             datatype = "GPLong",
             parameterType = "Required",
             direction = "Input")
-        param3.value = 500
+        param3.value = 100
 
         param4 = arcpy.Parameter(
             # Soil raster layer
@@ -102,7 +103,7 @@ class APSIMCropSimulationTool(object):
             parameterType = "Optional",
             direction = "Input",
             multiValue=True)
-        param4.value = "Maize"
+        #param4.value = "Maize"
         param4.filter.type = "ValueList"
         param4.filter.list = ['Maize', 'Maize rye', 'Maize rye Soybean', 'Maize Soybean']
 
@@ -343,7 +344,6 @@ class APSIMCropSimulationTool(object):
                  
                     # set up the environment
                 time.sleep(0.3)
-                arcpy.env.scratchWorkspace = 'in_memory'
                 arcpy.env.overwriteOutput = True
                 arcpy.env.workspace = ws
                 os.chdir(ws)
@@ -364,6 +364,7 @@ class APSIMCropSimulationTool(object):
                     #completed = subprocess.run(cmd, shell=False, check=True, capture_output=False)
                     process = subprocess.Popen(cmd, shell= shellvalue, stdout=PIPE, stderr=PIPE)
                     stdout, stderr = process.communicate()
+                    
                     logger.exception(stderr)
                     #arcpy.AddMessage(stderr)
                     #process = subprocess.Popen(['sys.exec_prefix', 'mainapp.py'], stdout=PIPE, stderr=PIPE)
@@ -383,7 +384,14 @@ class APSIMCropSimulationTool(object):
                 arcpy.AddMessage(fd.shape)
                 arcpy.SetProgressorLabel("Updating  {0}...".format(dt[key]))
             arcpy.ResetProgressor()
-            array, path2points, featurelayer = Utilities.create_fishnet(watershedfc, height = resolution)
+            bname = os.path.basename(ws)
+            root = ws.split(f'\\{bname}')[0]
+            dd = "featurelayers"
+            path =os.path.join(root, dd)
+            if not os.path.exists(path):
+                os.mkdir(path)
+            os.chdir(path)
+            array, path2points, featurelayer = configurationModule.create_fishnet(watershedfc, height = resolution)
             def map_results(path, watershedfc, inFeatures,  infield, jf):
                     gis_results = os.path.join(path,"GIS_files")
                     if not os.path.exists(gis_results):
@@ -415,6 +423,7 @@ class APSIMCropSimulationTool(object):
                         arcpy.CopyFeatures_management(in_features='fclyr',out_feature_class=os.path.splitext(os.path.basename(csv))[0])
                         arcpy.SetProgressorLabel("Updating  {0}...".format(csv))
             arcpy.ResetProgressor()
+            arcpy.env.workspace = results_folder
             map_results(results_folder,  watershedfc, featurelayer, "OBJECTID", "OBJECTID")
             arcpy.AddMessage("==============================================================")
             en = time.perf_counter()

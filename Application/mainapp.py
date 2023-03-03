@@ -43,7 +43,7 @@ with open(simf, "r+") as sim:
    info = json.load(sim)
 # extract the information
 start, end, crops, rn = info['start'], info['end'], info["crops"], info["rname"]
-basefile, watershedfcl =  info["Apsmx_basefile"], info['fc']
+ws, basefile, watershedfcl =  info["Apsmx_basefile"], info['fc'], info['workspace']
 resolution   =  info["cell_res"]
 print(basefile)
 if os.path.isfile(basefile):
@@ -53,9 +53,9 @@ else:
   
 os.chdir(info['workspace'])
 print("creatign a feature class fishnets")
-array, path2points, featurelayer = Utilities.create_fishnet(watershedfcl, height = resolution)
+array, path2points, featurelayer = configurationModule.create_fishnet(watershedfcl, height = resolution)
 #print(array)
-#array = array[:10]
+array = array
 iterable_values = list(np.arange(len(array)))
 
 track_failures = []
@@ -116,6 +116,37 @@ cores = math.floor(mp.cpu_count() *core)
 # pp =[MainrunforMP(i) for i in range(4)]
 # print(pp)
 # sys.exit()
+def map_results(path, watershedfc, inFeatures,  infield, jf):
+      gis_results = os.path.join(path,"GIS_files")
+      if not os.path.exists(gis_results):
+          os.mkdir(gis_results)
+        
+      '''
+      inFeatures: feature tto join the csvfiles
+      jf: joinfield
+      infield: infield of the Infeature
+      '''
+      watershedcode = str(watershedfc[-12:]) + ".csv"
+      csv_names_list =[]
+      for file in os.listdir(path):
+          if file.endswith(watershedcode):
+              csv_names_list.append(os.path.join(path, file))
+      arcpy.AddMessage(csv_names_list)
+      count_rows = len(csv_names_list) 
+      i = 0
+      arcpy.SetProgressor('step', 'Processing ...', 0, count_rows, i)
+      arcpy.env.workspace = gis_results
+      arcpy.env.overwriteOutput = True
+      os.chdir(gis_results)
+      for csv in csv_names_list:
+          arcpy.SetProgressorLabel(f'mapping :  ' + str(csv))
+          arcpy.SetProgressorPosition()
+          arcpy.MakeFeatureLayer_management(in_features=inFeatures, out_layer='fclyr')
+          arcpy.MakeTableView_management(in_table=csv, out_view='csvview')
+          arcpy.AddJoin_management(in_layer_or_view='fclyr', in_field=infield, join_table='csvview', join_field=jf)
+          arcpy.CopyFeatures_management(in_features='fclyr',out_feature_class=os.path.splitext(os.path.basename(csv))[0])
+          arcpy.SetProgressorLabel("Updating  {0}...".format(csv))
+arcpy.env.workspace = ws      
 if __name__ == "__main__":
     
     mp.set_executable(os.path.join(sys.exec_prefix, 'python.exe'))
@@ -129,12 +160,8 @@ if __name__ == "__main__":
       # print(Utilities.makedf(results))
     save_simulation_results(results)
     en = time.perf_counter()
-    datafc = configurationModule.convert_results_tofeatureclass(fd)
-    in_field = 'OBJECTID'
-    in_layer_or_view  = featurelayer
-    join_table = datafc
-    jtable = arcpy.arcpy.management.AddJoin(in_layer_or_view, in_field, join_table, 'OBJECTID')
-    arcpy.management.CopyFeatures(jtable, 'out_featureclass')
+    
+    map_results(ws,  watershedfcl, featurelayer, "FID", "OBJECTID")
     print(f"simulation took: {st-en}")
     delete_simulation_files(os.getcwd())
     delete_weather_files(os.getcwd())

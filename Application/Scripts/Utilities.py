@@ -331,7 +331,7 @@ def run_MultiPros(function, variables):
         for i in variables:
            p=  pool.apply_async(function, (i,)).get()
            pp.append(p)
-        px = utils1.makedf(pp)
+        px = makedf(pp)
         print(px)
         # run again
         resultsdir = os.path.join(os.getcwd(), "SimulationResults")
@@ -507,36 +507,44 @@ class ReadExcel2:
 
 def create_fishnet(watershedfc, height =200, SR = 4326):
     try:
-        pt = arcpy.env.workspace
-        geodata = 'Gis_result_geodatabase.gdb'
-        if not arcpy.Exists(geodata):
-           arcpy.CreateFileGDB_management(os.getcwd(), geodata)
-        arcpy.env.workspace = os.path.join(os.getcwd(), geodata)
-        path = os.path.join(os.getcwd(), geodata)
+    
+        
+        wd = os.path.join(os.getcwd(),"wg")
+        if not os.path.exists(wd):
+           os.mkdir(wd)
+        geodata = 'fclass.gdb'
+        envpath = os.path.join(wd, geodata)
+        if not arcpy.Exists(envpath):
+           arcpy.CreateFileGDB_management(wd, geodata, 'CURRENT')
+        arcpy.env.workspace =  envpath
+        arcpy.env.overwriteOutput = True
         # change the env according to inputfc
         envcod  = arcpy.da.Describe(watershedfc)['spatialReference'].name
         arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(envcod)
       # create a fishnet
         templateExtent = watershedfc
-        fc= templateExtent
-        labelname = 'box_fishnet'
-        fcname = os.path.join(geodata, labelname)
+        fcname = None
+        fcname = 'box_fisshp'
         if arcpy.Exists(fcname):
           arcpy.management.Delete(fcname)
+        fcname = 'box_fisshp'
         desc = arcpy.Describe(watershedfc)
         in_feature_path = arcpy.CreateFishnet_management(fcname,str(desc.extent.lowerLeft),str(desc.extent.XMin) + " " + str(desc.extent.YMax + 10),
             f"{height}",f"{height}","0","0",str(desc.extent.upperRight),"NO_LABELS","#","POLYGON")
         #let's clip out the unwanted part according to the processing extent
         in_features = in_feature_path
         clip_features = watershedfc
-        out_feature_class = watershedfc + "targetextentshp"
+        out_feature_class =  "target" #+ watershedfc[-12:]
+        if arcpy.Exists(out_feature_class):
+           arcpy.management.Delete(out_feature_class)
         #if arcpy.exists(out_feature_class):
           #arcpy.
         xy_tolerance = ""
         # Execute Clip
         arcpy.Clip_analysis(in_features, clip_features, out_feature_class, xy_tolerance)
+        arcpy.AddMessage(arcpy.Exists(out_feature_class))
         # convert each fishnet to point
-        name = os.path.join(path, "fishnets") 
+        name = os.path.join(envpath, "fish_points") 
         if arcpy.Exists(name):
           arcpy.management.Delete(name)#+ str(watershedfc[-9:])
         fishnets_points = arcpy.management.FeatureToPoint(out_feature_class, name, 'INSIDE')
@@ -546,10 +554,16 @@ def create_fishnet(watershedfc, height =200, SR = 4326):
         for i in lf:
             listfield.append(i.name)
         feature_array  = arcpy.da.FeatureClassToNumPyArray(name,  listfield, spatial_reference = sr)
-        arcpy.env.workspace = pt
+        arcpy.AddMessage(arcpy.Exists(feature_array))
+        
+                
         return  feature_array, fishnets_points, out_feature_class
     except  Exception as e:
        logger.exception(repr(e))
+       tb = sys.exc_info()[2]
+       tbinfo = traceback.format_tb(tb)[0]
+       pymsg = "PYTHON ERRORS:\nTraceback info:\n" + tbinfo + "\nError Info:\n" + str(sys.exc_info()[1])
+       arcpy.AddMessage(pymsg + "\n")
 # test the code
 # arcpya, bar = create_fishnet(templateExtent)
 
