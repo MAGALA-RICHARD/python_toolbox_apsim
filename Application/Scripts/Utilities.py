@@ -27,7 +27,7 @@ import arcpy
 import time
 import pandas as pd
 import logging
-from pyproj import transform, CRS, Transformer
+#from pyproj import transform, CRS, Transformer
 from arcpy.sa import *
 logger = logging.getLogger(__name__)
 # Check out the ArcGIS Spatial Analyst extension license
@@ -331,7 +331,7 @@ def run_MultiPros(function, variables):
         for i in variables:
            p=  pool.apply_async(function, (i,)).get()
            pp.append(p)
-        px = makedf(pp)
+        px = utils1.makedf(pp)
         print(px)
         # run again
         resultsdir = os.path.join(os.getcwd(), "SimulationResults")
@@ -507,44 +507,41 @@ class ReadExcel2:
 
 def create_fishnet(watershedfc, height =200, SR = 4326):
     try:
-    
-        
-        wd = os.path.join(os.getcwd(),"wg")
-        if not os.path.exists(wd):
-           os.mkdir(wd)
-        geodata = 'fclass.gdb'
-        envpath = os.path.join(wd, geodata)
-        if not arcpy.Exists(envpath):
-           arcpy.CreateFileGDB_management(wd, geodata, 'CURRENT')
-        arcpy.env.workspace =  envpath
+        arcpy.env.scratchWorkspace = "in_memory"
         arcpy.env.overwriteOutput = True
+        geodata = 'Gis_result_geodatabase.gdb'
+        if not arcpy.Exists(geodata):
+           arcpy.CreateFileGDB_management(os.getcwd(), geodata)
+        arcpy.env.workspace = os.path.join(os.getcwd(), geodata)
+        path = os.path.join(os.getcwd(), geodata)
         # change the env according to inputfc
         envcod  = arcpy.da.Describe(watershedfc)['spatialReference'].name
         arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(envcod)
       # create a fishnet
         templateExtent = watershedfc
-        fcname = None
-        fcname = 'box_fisshp'
+        fc= templateExtent
+        labelname = 'box_fishnet'
+        fcname = os.path.join(geodata, labelname)
         if arcpy.Exists(fcname):
           arcpy.management.Delete(fcname)
-        fcname = 'box_fisshp'
         desc = arcpy.Describe(watershedfc)
         in_feature_path = arcpy.CreateFishnet_management(fcname,str(desc.extent.lowerLeft),str(desc.extent.XMin) + " " + str(desc.extent.YMax + 10),
             f"{height}",f"{height}","0","0",str(desc.extent.upperRight),"NO_LABELS","#","POLYGON")
         #let's clip out the unwanted part according to the processing extent
         in_features = in_feature_path
         clip_features = watershedfc
-        out_feature_class =  "target" #+ watershedfc[-12:]
+        out_feature_class = "fcc_clipped"
         if arcpy.Exists(out_feature_class):
-           arcpy.management.Delete(out_feature_class)
+          arcpy.management.Delete(out_feature_class)
+        out_feature_class = None
+        out_feature_class = "fcc_clipped"
         #if arcpy.exists(out_feature_class):
           #arcpy.
         xy_tolerance = ""
         # Execute Clip
         arcpy.Clip_analysis(in_features, clip_features, out_feature_class, xy_tolerance)
-        arcpy.AddMessage(arcpy.Exists(out_feature_class))
         # convert each fishnet to point
-        name = os.path.join(envpath, "fish_points") 
+        name = os.path.join(path, "fishnets") 
         if arcpy.Exists(name):
           arcpy.management.Delete(name)#+ str(watershedfc[-9:])
         fishnets_points = arcpy.management.FeatureToPoint(out_feature_class, name, 'INSIDE')
@@ -554,16 +551,10 @@ def create_fishnet(watershedfc, height =200, SR = 4326):
         for i in lf:
             listfield.append(i.name)
         feature_array  = arcpy.da.FeatureClassToNumPyArray(name,  listfield, spatial_reference = sr)
-        arcpy.AddMessage(arcpy.Exists(feature_array))
         
-                
         return  feature_array, fishnets_points, out_feature_class
     except  Exception as e:
        logger.exception(repr(e))
-       tb = sys.exc_info()[2]
-       tbinfo = traceback.format_tb(tb)[0]
-       pymsg = "PYTHON ERRORS:\nTraceback info:\n" + tbinfo + "\nError Info:\n" + str(sys.exc_info()[1])
-       arcpy.AddMessage(pymsg + "\n")
 # test the code
 # arcpya, bar = create_fishnet(templateExtent)
 
@@ -735,7 +726,7 @@ def extract_param_table(string):
 def delete_simulation_files(path):
   weather_files_path = opj(path, 'weatherdata')
   weather_files = glob.glob1(weather_files_path, 'weather_Daymet*.met')
-  patterns = ['*lat*lon*.csv', 'np*.txt', 'edit*.apsimx', 'edit*.db-shm', 'edit*.db-wal', 'edit*.db']
+  patterns = ['*lat*lon*.csv', 'np*.txt', 'edit*.apsimx', 'edit*.db-shm', 'edit*.db-wal', 'edit*.db', 'fish*.cpg', 'edit*.bak', 'coh*.apsimx', 'coh*.bak', 'fish*.shp', 'fish*.shx']
   localfiles = [glob.glob1(path, pat) for pat in patterns]
   files_to_delete = []
   for file_group in localfiles:
@@ -862,49 +853,6 @@ class result_Gis_Management:
       return self
     except  Exception as e:
       logger.exception(repr(e))
-def convert_results_tofeatureclass(dat, cellSize = 0.02, field ='meanN20', srf = 4326):
-  '''
-  paramters:
-  ---------------------
-  dat: is a panda data frame
-  srf = spatial reference name or code
-  ------------------------
-  '''
-  geodata = 'Gis_result_geodatabase.gdb'
-  arcpy.env.workspace = os.path.join(os.getcwd(), geodata)
-  if not arcpy.Exists(geodata):
-       arcpy.CreateFileGDB_management(os.getcwd(), geodata)
-  point_feature_class = 'results_point_feature_class'
-  data = dat #dat.groupby(['CompName']).mean()
-  if arcpy.Exists(point_feature_class):
-    arcpy.management.Delete(point_feature_class)
-  fd  = data.convert_dtypes()
-  structuredNumpy_records = data.to_records(index= False)
-  fc_name = os.path.join(geodata, point_feature_class)
-  srf = arcpy.SpatialReference(srf)
-  # change some unassigned data type
-  dt = structuredNumpy_records.dtype.descr
-  for idd, elem  in zip(range(len(dt)), dt):
-    if 'Soiltype' in elem:
-      dt[idd] = ('Soiltype', '<U25')
-    elif 'CompName' in elem:
-      dt[idd] = ('CompName', '<U25')
-    else:
-      pass
-  
-  featuretobe = structuredNumpy_records.astype(dt)
-  arcpy.da.NumPyArrayToFeatureClass(featuretobe, fc_name, ["longitude","Latitude"], srf)
-  inFeatures= fc_name 
-  outRaster = fc_name + "raster"
-  if arcpy.Exists(outRaster):
-    arcpy.management.Delete(outRaster)
-  valField  = 'meanN20'
-  priorityField = ''
-  assignmentType = 'MOST_FREQUENT'
-  arcpy.PointToRaster_conversion(inFeatures, valField, outRaster, 
-                               assignmentType, priorityField, cellSize)
-                               
-  return  outRaster
 # import os
 # data = os.path.join(r'C:\Users\rmagala\Box\Simulation_Application\Papsimx\SimulationResults', 'Continous_maize_acpf070801050101.csv')
 # import pandas as pd

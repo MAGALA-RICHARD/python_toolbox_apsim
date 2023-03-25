@@ -3,7 +3,7 @@ from os.path import join as opj
 import os
 import   sqlite3
 import pandas as pd
-import progressbar
+#import progressbar
 import time
 import logging
 import subprocess
