@@ -1,3 +1,6 @@
+# this is the  main script of the python toollbox
+# author richard Magala; magalarich20@gmail.com
+# Iowa state University
 # import local modules
 from os.path import dirname
 root_dir = dirname(__file__)
