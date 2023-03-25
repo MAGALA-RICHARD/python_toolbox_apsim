@@ -31,6 +31,7 @@ from datetime import datetime
 from os.path import join as opj
 import time
 import re
+from math import floor
 
 
 # set up logging message 
@@ -65,7 +66,8 @@ def worker(index, basefile, start, end, array):
         basefile = basefile
         long_lat = array[index][1]
         try:
-          path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = array[index][2], gridcode = str(array[index][0]), Objectid = str(array[index][2]), crop = None)
+          path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+          #print(str(array[index][4]))
           # download weather data from daymet returns path2file
         except ValueError as e:
           logger.exception(f"{repr(e)} at long lat: {long_lat}")
@@ -74,7 +76,7 @@ def worker(index, basefile, start, end, array):
         weatherpath = daymet_bylocation(long_lat, start, end)
         wp = Weather2(path2apsimx, weatherpath, start, end)
         met_files = wp.ReplaceWeatherData()
-        print(met_files)
+        #print(met_files)
         return met_files
   except Exception as e:
         logger.exception(repr(e))
@@ -101,23 +103,25 @@ def Collect_for_maize_ryecover(apsimx):
         df = {}
         dat = None
         dat = runAPSIM2(apsimx)
-        df['OBJECTID'] = dat["MaizeR"].OBJECTID.values[0]
+        lg = len(dat['MaizeR'].Yield)
+        lst = lg -1
+        df['OBJECTID'] = int(dat["MaizeR"].OBJECTID.values[0])
         df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
         df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df['meanMaizeYield']= dat["MaizeR"].Yield.mean()
-        df['meanMaizeAGB'] =  dat["MaizeR"].AGB.mean()
+        df['meanMaizeYield']= round(dat["MaizeR"].Yield.max())
+        df['meanMaizeAGB'] =  round(dat["MaizeR"].AGB.mean())
         df['longitude'] = dat["MaizeR"].longitude.values[1]
         df["Latitude"] = dat["MaizeR"].latitude[0]
         df["ChangeINCarbon"] = None
-        df["ChangeINCarbon"]    = dat['Carbon1'].carbon[0]
-        df["RyeBiomass"] = dat["WheatR"].AGB.mean()
+        df["ChangeINCarbon"]    =round(dat['Carbon1'].carbon[0])
+        df["RyeBiomass"] = round(dat["WheatR"].AGB.mean())
         df["CO2"] = dat['Annual'].Top_respiration.mean()
-        df["meanSOC1"] = dat['Annual'].SOC1.mean()
-        df["meanSOC2"] = dat['Annual'].SOC2.mean()
-        df['meanN20'] = dat["MaizeR"].TopN2O.mean()
-        df['leached_nitrogen']  = dat['Annual'].CumulativeAnnualLeaching.mean()
-        df['MineralN']  = dat['Annual'].MineralN.mean()
+        df["meanSOC1"] = round(dat['Annual'].SOC1.mean())
+        df["meanSOC2"] = round(dat['Annual'].SOC2.mean())
+        df['meanN20'] = round(dat["MaizeR"].TopN2O.mean())
+        df['leached_nitrogen']  = round(dat['Annual'].CumulativeAnnualLeaching.mean())
+        df['MineralN']  = round(dat['Annual'].MineralN.mean())
         return df
   except Exception as e:
     logger.exception(repr(e))
@@ -130,24 +134,26 @@ def Collect_for_maize_soybean_ryecover(apsimx):
         df = {}
         report = "MaizeR"
         dat = runAPSIM2(apsimx)
-        df['OBJECTID'] = dat["MaizeR"].OBJECTID.values[0]
+        lg = len(dat['MaizeR'].Yield)
+        lst = lg -1
+        df['OBJECTID'] = int(dat["MaizeR"].OBJECTID.values[0])
         df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
         df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df['meanMaizeYield']= dat["MaizeR"].Yield.mean()
+        df['meanMaizeYield']= round(dat["MaizeR"].Yield[lst])
         df['meanMaizeAGB'] =  dat["MaizeR"].AGB.mean()
         df['longitude'] = dat["MaizeR"].longitude.values[1]
         df["Latitude"] = dat["MaizeR"].latitude[0]
         df["ChangeINCarbon"] = None
-        df["ChangeINCarbon"]    =dat['Carbon'].changeincarbon[0]
-        df["RyeBiomass"] = dat["WheatR"].AGB.mean()
-        df["CO2"] = dat['Annual'].Top_respiration.mean()
-        df["meanSOC1"] = dat['Annual'].SOC1.mean()
-        df["meanSOC2"] = dat['Annual'].SOC2.mean()
-        df['meanN20'] = dat["MaizeR"].TopN2O.mean()
-        df['leached_nitrogen']  = dat['Annual'].CumulativeAnnualLeaching.mean()
-        df['MineralN']  = dat['Annual'].MineralN.mean()
-        df['meanSoybeanYield']= dat["SoybeanR"].Yield.mean()
+        df["ChangeINCarbon"]    =round(dat['Carbon'].changeincarbon[0])
+        df["RyeBiomass"] = round(dat["WheatR"].AGB.mean())
+        df["CO2"] = round(dat['Annual'].Top_respiration.mean())
+        df["meanSOC1"] = round(dat['Annual'].SOC1.mean())
+        df["meanSOC2"] = round(dat['Annual'].SOC2.mean())
+        df['meanN20'] = round(dat["MaizeR"].TopN2O.mean())
+        df['leached_nitrogen']  = round(dat['Annual'].CumulativeAnnualLeaching.mean())
+        df['MineralN']  = round(dat['Annual'].MineralN.mean())
+        df['meanSoybeanYield']= round(dat["SoybeanR"].Yield.mean())
         return df
   except Exception as e:
        logger.exception(repr(e))
@@ -160,21 +166,23 @@ def CollectforMaize_only(apsimx_file):
         df = {}
         dat = None
         dat = runAPSIM2(apsimx_file)
-        df['OBJECTID'] = dat["MaizeR"].OBJECTID.values[0]
+        lg = len(dat['MaizeR'].Yield)
+        lst = lg -1
+        df['OBJECTID'] = int(dat["MaizeR"].OBJECTID.values[0])
         df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
         df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df['meanMaizeYield']= dat["MaizeR"].Yield.mean()
-        df['meanMaizeAGB'] =  dat["MaizeR"].AGB.mean()
+        df['meanMaizeYield']= round(dat["MaizeR"].Yield[lst])
+        df['meanMaizeAGB'] =  round(dat["MaizeR"].AGB.mean())
         df['longitude'] = dat["MaizeR"].longitude.values[1]
         df["Latitude"] = dat["MaizeR"].latitude[0]
-        df["CO2"] = dat['Annual'].Top_respiration.mean()
-        df["meanSOC1"] = dat['Annual'].SOC1.mean()
-        df["meanSOC2"] = dat['Annual'].SOC2.mean()
-        df['meanN20'] = dat["MaizeR"].TopN2O.mean()
-        df["ChangeINCarbon"]    =dat['Carbon'].changeincarbon[0]
-        df['leached_nitrogen']  = dat['Annual'].CumulativeAnnualLeaching.mean()
-        df['MineralN']  = dat['Annual'].MineralN.mean()
+        df["CO2"] = round(dat['Annual'].Top_respiration.mean())
+        df["meanSOC1"] = round(dat['Annual'].SOC1.mean())
+        df["meanSOC2"] = round(dat['Annual'].SOC2.mean())
+        df['meanN20'] = round(dat["MaizeR"].TopN2O.mean())
+        df["ChangeINCarbon"]    = round(dat['Carbon'].changeincarbon[0])
+        df['leached_nitrogen']  = round(dat['Annual'].CumulativeAnnualLeaching.mean())
+        df['MineralN']  = round(dat['Annual'].MineralN.mean())
         return df
   except Exception as e:
      logger.exception(repr(e))
@@ -186,23 +194,25 @@ def CollectforMaize_soybean_no_rye(apsimx_file):
         df = {}
         report = "MaizeR"
         dat = runAPSIM2(apsimx_file)
-        df['OBJECTID'] = dat["MaizeR"].OBJECTID.values[0]
+        lg = len(dat['MaizeR'].Yield)
+        lst = lg -1
+        df['OBJECTID'] = int(dat["MaizeR"].OBJECTID.values[0])
         df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
         df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df['meanMaizeYield']= dat["MaizeR"].Yield.mean()
-        df['meanMaizeAGB'] =  dat["MaizeR"].AGB.mean()
+        df['meanMaizeYield']= round(dat["MaizeR"].Yield[lst])
+        df['meanMaizeAGB'] =  round(dat["MaizeR"].AGB.mean())
         df['longitude'] = dat["MaizeR"].longitude.values[1]
         df["Latitude"] = dat["MaizeR"].latitude[0]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df["CO2"] = dat['Annual'].Top_respiration.mean()
-        df["meanSOC1"] = dat['Annual'].SOC1.mean()
-        df["meanSOC2"] = dat['Annual'].SOC2.mean()
-        df['meanN20'] = dat["MaizeR"].TopN2O.mean()
-        df["ChangeINCarbon"]    =dat['Carbon'].changeincarbon[0]
-        df['leached_nitrogen']  = dat['Annual'].CumulativeAnnualLeaching.mean()
-        df['MineralN']  = dat['Annual'].MineralN.mean()
-        df['meanSoybeanYield']= dat["SoybeanR"].Yield.mean()
+        df["CO2"] = round(dat['Annual'].Top_respiration.mean())
+        df["meanSOC1"] = round(dat['Annual'].SOC1.mean())
+        df["meanSOC2"] = round(dat['Annual'].SOC2.mean())
+        df['meanN20'] = round(dat["MaizeR"].TopN2O.mean())
+        df["ChangeINCarbon"]    = round(dat['Carbon'].changeincarbon[0])
+        df['leached_nitrogen']  = round(dat['Annual'].CumulativeAnnualLeaching.mean())
+        df['MineralN']  = round(dat['Annual'].MineralN.mean())
+        df['meanSoybeanYield']= round(dat["SoybeanR"].Yield.mean())
         return df
   except Exception as e:
      logger.exception(repr(e))
@@ -232,41 +242,6 @@ def run_multiple_scenarios(apsimx_file, dict_data):
   crops = None
   for crops in dict_data:
       runapsimx(apsimx_file, crops)
-
-def convert_results_tofeatureclass(dat,  srf = 4326):
-  '''
-  paramters:
-  ---------------------
-  dat: is a panda data frame
-  srf = spatial reference name or code
-  ------------------------
-  '''
-  geodata = 'Gis_result_geodatabase.gdb'
-  arcpy.env.workspace = os.path.join(os.getcwd(), geodata)
-  if not arcpy.Exists(geodata):
-       arcpy.CreateFileGDB_management(os.getcwd(), geodata)
-  point_feature_class = 'results_point_feature_class'
-  data = dat #dat.groupby(['CompName']).mean()
-  if arcpy.Exists(point_feature_class):
-    arcpy.management.Delete(point_feature_class)
-  fd  = data.convert_dtypes()
-  structuredNumpy_records = data.to_records(index= False)
-  fc_name = os.path.join(geodata, point_feature_class)
-  srf = arcpy.SpatialReference(srf)
-  # change some unassigned data type
-  dt = structuredNumpy_records.dtype.descr
-  for idd, elem  in zip(range(len(dt)), dt):
-    if 'Soiltype' in elem:
-      dt[idd] = ('Soiltype', '<U25')
-    elif 'CompName' in elem:
-      dt[idd] = ('CompName', '<U25')
-    else:
-      pass
-  
-  featuretobe = structuredNumpy_records.astype(dt)
-  arcpy.da.NumPyArrayToFeatureClass(featuretobe, fc_name, ["longitude","Latitude"], srf)
-  
-  return  fc_name
 
 
 def create_results_raster_layer(dat, inraster, cellSize = 0.02, field ='meanMaizeAGB',  assignmentType = 'MOST_FREQUENT'):
