@@ -82,7 +82,7 @@ class APSIMCropSimulationTool(object):
             parameterType="Required",
             direction="Input" )
         param1.filter.list = ["apsimx"]
-        param1.value =r'E:\BaseAPSIM\CORN.apsimx'
+        
         param2 = arcpy.Parameter(
             # Soil raster layer
             displayName = "Insert polygon feature class for the study area (Multiple inputs are allowed)",
@@ -90,7 +90,9 @@ class APSIMCropSimulationTool(object):
             datatype = "GPFeatureLayer",
             parameterType = "Required",
             direction = "Input", multiValue=True)
-        param2.value = r'E:\ACPd\Base_files\acpf_huc070801050101\acpf070801050101.gdb\buf070801050101'
+        pt = r'acpf070801050201.gdb\buf070801050201'
+        wts  = os.path.join(root_dir, pt)
+        param2.value = wts
         #param1.filter.list = ["tif"]
         param3 = arcpy.Parameter(
             # Soil raster layer
@@ -244,11 +246,7 @@ class APSIMCropSimulationTool(object):
         # insert default apsim file
         apsm  = os.path.join(root_dir, "BaseAPSIM")
         if not parameters[1].altered:
-            parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')
-        # default watershed
-        wts  = os.path.join(root_dir, 'acpf070801050201.gdb')
-        if not parameters[2].altered:
-            parameters[1].value = os.path.join(wts, 'buf070801050201')
+            parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')      
 
         return
 
@@ -378,7 +376,7 @@ class APSIMCropSimulationTool(object):
                  
                     # set up the environment
                 time.sleep(0.3)
-                arcpy.env.scratchWorkspace = 'in_memory'
+                #arcpy.env.scratchworkspace = 'in_memory'
                 arcpy.env.overwriteOutput = True
                 arcpy.env.workspace = ws
                 os.chdir(ws)
