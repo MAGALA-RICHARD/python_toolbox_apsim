@@ -417,7 +417,7 @@ class APSIMCropSimulationTool(object):
                 results = os.path.join(results_folder, dictionary2bejsoned['rname'])
                 fd = pd.read_csv(results)
                 arcpy.AddMessage(f'Results data frame is {fd.shape} dimesnions')
-                arcpy.AddMessage(fd.ChangeINCarbon)
+                arcpy.AddMessage(fd)
                 #arcpy.AddMessage(fd.shape)
                 arcpy.SetProgressorLabel("Exiting  {0} simulation...".format(feature_basename))
             arcpy.ResetProgressor()
