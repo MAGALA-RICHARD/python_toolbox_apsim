@@ -240,6 +240,16 @@ class APSIMCropSimulationTool(object):
         has been changed."""
         if parameters[8].value == False:
             parameters[9].enabled = 0
+        import os
+        # insert default apsim file
+        apsm  = os.path.join(root_dir, "BaseAPSIM")
+        if not parameters[1].altered:
+            parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')
+        # default watershed
+        wts  = os.path.join(root_dir, 'acpf070801050201.gdb')
+        if not parameters[2].altered:
+            parameters[1].value = os.path.join(wts, 'buf070801050201')
+
         return
 
     def updateMessages(self, parameters):
