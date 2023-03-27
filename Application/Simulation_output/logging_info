@@ -1,0 +1,4 @@
+2023-03-27 12:22:20,770 ERROR 'PYTHON ERRORS:\nTraceback info:\n  File "<string>", line 387, in execute\n\nError Info:\n\'GPEnvironment\' object has no attribute \'scratchworkspace\''
+Traceback (most recent call last):
+  File "<string>", line 387, in execute
+AttributeError: 'GPEnvironment' object has no attribute 'scratchworkspace'

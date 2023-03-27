@@ -67,12 +67,11 @@ class APSIMCropSimulationTool(object):
         """Define parameter definitions"""
         param0 = arcpy.Parameter(
             # Input workspace
-            displayName="Insert input workspace",
+            displayName="Insert input workspace; no spaces are allowed in this directory",
             name="in_workspace",
             datatype="DEWorkspace",
             parameterType="Required",
             direction="Input")
-        param0.value = r'E:\async_test'
         
         param1 = arcpy.Parameter(
             # Input workspace
@@ -201,8 +200,6 @@ class APSIMCropSimulationTool(object):
         param13.value = "80%"
         param13.filter.type = "ValueList"
         param13.filter.list = ['5%', '10%',"20%", "40%", "50%", "60%", "80%", '85%', "95%", "100%"]
-
-        
         
         param14 = arcpy.Parameter(
             displayName = "Amount of Nitrogen to be applied ",
@@ -222,7 +219,7 @@ class APSIMCropSimulationTool(object):
         param15.filter.type = "ValueList"
         param15.value = '30-may'
         param16 = arcpy.Parameter(
-            displayName = "Run test whether your model inputs are correct by running a few simulations",
+            displayName = "Test whether your model inputs are correct by running a few simulations; 10 simulations/locations will be run and printed on your screen",
             name = 'test',
             datatype = "GPBoolean",
             parameterType = "Optional",
@@ -240,9 +237,11 @@ class APSIMCropSimulationTool(object):
         """Modify the values and properties of parameters before internal
         validation is performed.  This method is called whenever a parameter
         has been changed."""
+        import os
+        if not parameters[0].altered:
+           parameters[0].defaultEnvironmentName = 'workspace'
         if parameters[8].value == False:
             parameters[9].enabled = 0
-        import os
         # insert default apsim file
         apsm  = os.path.join(root_dir, "BaseAPSIM")
         if not parameters[1].altered:
@@ -258,6 +257,11 @@ class APSIMCropSimulationTool(object):
     def execute(self, parameters, messages):
       """The source code of the tool."""
       arcpy.AddMessage("Using Python Version {0}".format(python_version()))
+      if ' ' in parameters[0].valueAsText or ' ' in root_dir:
+          arcpy.AddMessage("No white spaces are allowed in the workig directory please change working directory \n \
+                           or copy the toolbox to a new directory without white spaces.")
+          arcpy.AddMessage("Exited the program...............")
+          sys.exit(1)
       feature_watershed = parameters[2].valueAsText 
       fcs_list = feature_watershed.split(';')
       set_fc = set(fcs_list)
@@ -375,8 +379,8 @@ class APSIMCropSimulationTool(object):
                 del sim_info
                  
                     # set up the environment
-                time.sleep(0.3)
-                #arcpy.env.scratchworkspace = 'in_memory'
+                time.sleep(0.1)
+                arcpy.env.scratchWorkspace = 'in_memory'
                 arcpy.env.overwriteOutput = True
                 arcpy.env.workspace = ws
                 os.chdir(ws)
