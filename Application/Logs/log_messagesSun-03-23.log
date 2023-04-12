@@ -1,0 +1,502 @@
+2023-03-26 23:14:31,882 ERROR ValueError('If using all scalar values, you must pass an index') at long lat: [-93.57110451  42.39680921]
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:14:31,902 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:14:31,902 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:16:17,178 ERROR ValueError('If using all scalar values, you must pass an index') at long lat: [-93.56571762  42.47338643]
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:16:17,182 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:16:17,183 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:20:09,682 ERROR ValueError('If using all scalar values, you must pass an index') at long lat: [-93.56608298  42.51391095]
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:20:09,685 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:20:09,685 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:20:57,664 ERROR ValueError('If using all scalar values, you must pass an index') at long lat: [-93.57159514  42.45084252]
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:20:57,668 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:20:57,668 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:23:25,536 ERROR ValueError('If using all scalar values, you must pass an index') at long lat: [-93.63230577  42.44151778]
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:23:25,539 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:23:25,539 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:27:35,843 ERROR ValueError('If using all scalar values, you must pass an index') at long lat: [-93.57139055  42.42832871]
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:27:35,845 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:27:35,846 ERROR ValueError('If using all scalar values, you must pass an index')
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 69, in worker
+    path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 566, in Replace_Soilprofile2
+    soildownload = DownloadsurgoSoiltables(lonlat, series)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\soilmanager.py", line 71, in DownloadsurgoSoiltables
+    soil_df = pd.DataFrame.from_dict(my_dict['soap:Envelope']['soap:Body']['RunQueryResponse']['RunQueryResult']['diffgr:diffgram']['NewDataSet']['Table'])
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 1677, in from_dict
+    return cls(data, index=index, columns=columns, dtype=dtype)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\frame.py", line 636, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 502, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 120, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\pandas\core\internals\construction.py", line 664, in _extract_index
+    raise ValueError("If using all scalar values, you must pass an index")
+ValueError: If using all scalar values, you must pass an index
+2023-03-26 23:28:01,105 ERROR ConnectionError(ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+Traceback (most recent call last):
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 501, in wrap_socket
+    return self.sslsocket_class._create(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1041, in _create
+    self.do_handshake()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1310, in do_handshake
+    self._sslobj.do_handshake()
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\retry.py", line 550, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\packages\six.py", line 769, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 501, in wrap_socket
+    return self.sslsocket_class._create(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1041, in _create
+    self.do_handshake()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1310, in do_handshake
+    self._sslobj.do_handshake()
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 76, in worker
+    weatherpath = daymet_bylocation(long_lat, start, end)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\Weather_download.py", line 431, in daymet_bylocation
+    rad = get_nasarad(lonlat, start, end)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\Weather_download.py", line 316, in get_nasarad
+    data = requests.get(rm, timeout = 30)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\adapters.py", line 547, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2023-03-26 23:28:01,195 ERROR ConnectionError(ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+Traceback (most recent call last):
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 501, in wrap_socket
+    return self.sslsocket_class._create(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1041, in _create
+    self.do_handshake()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1310, in do_handshake
+    self._sslobj.do_handshake()
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\retry.py", line 550, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\packages\six.py", line 769, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\urllib3\util\ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 501, in wrap_socket
+    return self.sslsocket_class._create(
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1041, in _create
+    self.do_handshake()
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\ssl.py", line 1310, in do_handshake
+    self._sslobj.do_handshake()
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\mainapp.py", line 88, in MainrunforMP
+    pr = configurationModule.worker(index, basefile, start, end, array)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\configurationModule.py", line 76, in worker
+    weatherpath = daymet_bylocation(long_lat, start, end)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\Weather_download.py", line 431, in daymet_bylocation
+    rad = get_nasarad(lonlat, start, end)
+  File "E:\python_toolbox_github\python_toolbox_apsim\Application\Scripts\Weather_download.py", line 316, in get_nasarad
+    data = requests.get(rm, timeout = 30)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\rmagala\AppData\Local\Programs\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\Lib\site-packages\requests\adapters.py", line 547, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))

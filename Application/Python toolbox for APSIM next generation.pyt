@@ -15,21 +15,19 @@ all_scripts  = opj(root_dir, 'Scripts')
 import sys
 sys.path.append(root_dir)
 sys.path.append(all_scripts)
-import set_up
-import Utilities
+#import Utilities
 import Weather_download
 from Model import runAPSIM2
-from soilmanager import Replace_Soilprofile2
+#from soilmanager import Replace_Soilprofile2
 from Weather_download import daymet_bylocation
 from weather_manager import Weather2
-from Utilities import extract_param_table
-from Utilities import create_fishnet
+#from Utilities import extract_param_table
+#from Utilities import create_fishnet
 import traceback            
 import cropmanager
 import numpy as np
 import arcpy
 import time
-import glob
 import glob
 import subprocess
 import pandas as pd
@@ -42,9 +40,9 @@ import createfishnets
 import tempfile
 import shutil
 from collections import Counter
+import pkgutil
 
-
-
+ # install missing apps first
 #from pyproj import transform, CRS, Transformer                    
 class Toolbox(object):
     def __init__(self):
@@ -246,7 +244,15 @@ class APSIMCropSimulationTool(object):
         apsm  = os.path.join(root_dir, "BaseAPSIM")
         if not parameters[1].altered:
             parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')      
-
+        pathtoC = r'C:/'
+        pathtoD = r'D:/'
+        if os.path.exists(pathtoC) or os.path.join(pathtoD):
+            path  = os.path.join(pathtoC, "Default_Output")
+        if not os.path.exists(path):
+            os.mkdir(path)
+        if "Windows"in platform.platform():
+          if not parameters[0].altered and os.path.exists(path):
+            parameters[0].value = path
         return
 
     def updateMessages(self, parameters):
@@ -256,6 +262,28 @@ class APSIMCropSimulationTool(object):
 
     def execute(self, parameters, messages):
       """The source code of the tool."""
+      #create a function to show if a package is installed
+      def check_if_package_Loaded(package):
+        load_package  = pkgutil.find_loader(package)
+        if load_package != None:
+            value = True
+            return value
+      
+      for pkg in ['xmltodict', 'urllib', 'scipy', 'pandas', 'numpy', 'requests', 'winsound', 'platform']:
+         if check_if_package_Loaded(pkg) !=True: 
+           
+           cmd = ["pip", "install"] + [pkg]  # this assumes that pip is already installed
+           result = subprocess.run(cmd, capture_output=True)
+           if result.returncode == 0:
+             message = "Installation successful!"
+             arcpy.AddMessage(f'{pkg}: {message}')
+
+           else:
+              msg = f'Package {pkg}: is not found on your computer and installation of the module has failed; the model may not excute succssfuly.\
+                                Please go to application folder and run the set_up.py script or contact: rmagala@iastate.edu' 
+              message = f"Installation failed with error:\n{result.stderr.decode()}"
+              arcpy.AddMessage(msg)
+
       arcpy.AddMessage("Using Python Version {0}".format(python_version()))
       if ' ' in parameters[0].valueAsText or ' ' in root_dir:
           arcpy.AddMessage("No white spaces are allowed in the workig directory please change working directory \n \
@@ -512,6 +540,8 @@ class APSIMCropSimulationTool(object):
             endtime = time.perf_counter()
             arcpy.AddMessage(f'Simulations {fc} completed in: [{endtime-starttime} seconds]')
             # just in case something drammatically happens before the end of the simulations we still need to clear work log files off the computer
+            sys.path.append(all_scripts)
+            import Utilities
             Utilities.delete_simulation_files(ws)
             Utilities.delete_simulation_files(root_dir)
             arcpy.env.workspace = root_dir
