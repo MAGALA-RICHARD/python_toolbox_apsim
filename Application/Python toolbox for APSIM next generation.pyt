@@ -246,8 +246,11 @@ class APSIMCropSimulationTool(object):
             parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')      
         pathtoC = r'C:/'
         pathtoD = r'D:/'
-        if os.path.exists(pathtoC) or os.path.join(pathtoD):
+        if os.path.exists(pathtoC):
             path  = os.path.join(pathtoC, "Default_Output")
+        else:
+            if os.path.exists(pathtoD):
+               path  = os.path.join(pathtoD, "Default_Output") 
         if not os.path.exists(path):
             os.mkdir(path)
         if "Windows"in platform.platform():
@@ -283,6 +286,8 @@ class APSIMCropSimulationTool(object):
                                 Please go to application folder and run the set_up.py script or contact: rmagala@iastate.edu' 
               message = f"Installation failed with error:\n{result.stderr.decode()}"
               arcpy.AddMessage(msg)
+              arcpy.AddMessage("Exited the program...............")
+              sys.exit(1)
 
       arcpy.AddMessage("Using Python Version {0}".format(python_version()))
       if ' ' in parameters[0].valueAsText or ' ' in root_dir:
@@ -545,7 +550,6 @@ class APSIMCropSimulationTool(object):
             Utilities.delete_simulation_files(ws)
             Utilities.delete_simulation_files(root_dir)
             arcpy.env.workspace = root_dir
-            arcpy.AddMessage(arcpy.Exists('fishnets'))
             if arcpy.Exists("fishnets"):
                 arcpy.management.Delete("fishnets")
             Utilities.delete_weather_files(ws)
