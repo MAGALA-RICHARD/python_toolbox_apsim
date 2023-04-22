@@ -141,7 +141,7 @@ class APSIMCropSimulationTool(object):
         # output file
         # read simulation database
         param8 = arcpy.Parameter(
-            displayName = "Run the tools with multiple scenarios (Checked)",
+            displayName = "Open default APSIM in GUI (Checked)",
             name = 'do_scenarios',
             datatype = "GPBoolean",
             parameterType = "Optional",
@@ -319,7 +319,7 @@ class APSIMCropSimulationTool(object):
             start =parameters[5].valueAsText
             end =  parameters[6].valueAsText
             asyncro= parameters[7].valueAsText
-            scenarios = parameters[8].valueAsText
+            openfile = parameters[8].valueAsText
             paramtable  = parameters[9].valueAsText
             depth = int(parameters[10].valueAsText)
             residue = float(parameters[11].valueAsText)
@@ -342,7 +342,8 @@ class APSIMCropSimulationTool(object):
                 arcpy.AddMessage("APSIMX file does not exist. kill the process and try again")
             arcpy.AddMessage("*****************************************************************")
             os.chdir(root_dir)
-            
+            if openfile == 'true':
+                os.startfile(basefile)
             crops = crops.split(";")
             crop_bag = []
             crop = None

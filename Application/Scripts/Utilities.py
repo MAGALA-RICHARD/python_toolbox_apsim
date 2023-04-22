@@ -1,5 +1,6 @@
 # config
 from os.path import dirname
+import warnings
 root_dir = dirname(__file__)
 from os.path import join as opj
 all_scripts  = opj(root_dir, 'Scripts')
@@ -32,7 +33,7 @@ from arcpy.sa import *
 logger = logging.getLogger(__name__)
 # Check out the ArcGIS Spatial Analyst extension license
 arcpy.CheckOutExtension("Spatial")
-
+warnings.simplefilter(action='ignore', category=FutureWarning)
 #path for the apsimx file
 seriesnames=['Clarion','Canisteo', 'Coland',  'Muscatine', 'Okoboji', 'Nicollet',  "Colo", 'Gara','Tama', 'Webster', 'Buckney',
 'Ackmore', 'Nodaway', 'Colo']
@@ -853,6 +854,9 @@ class result_Gis_Management:
       return self
     except  Exception as e:
       logger.exception(repr(e))
+def calculate_statistics(dataframe: 'pandas.core.frame.DataFrame', statistic: str):
+    data = getattr(dataframe, statistic)()
+    return data
 # import os
 # data = os.path.join(r'C:\Users\rmagala\Box\Simulation_Application\Papsimx\SimulationResults', 'Continous_maize_acpf070801050101.csv')
 # import pandas as pd

@@ -58,6 +58,7 @@ with open(simf, "r+") as sim:
 start, end, crops, rn = info['start'], info['end'], info["crops"], info["rname"]
 basefile, watershedfcl =  info["Apsmx_basefile"], info['fc']
 resolution   =  info["cell_res"]
+
 print(crops)
 print(basefile)
 if os.path.isfile(basefile):
@@ -71,8 +72,9 @@ print("creatign a feature class fishnets")
 os.chdir(dirpath)
 array, path2points, featurelayer = createfishnets.create_fishnet(watershedfcl, height = resolution)
 os.chdir(info['workspace'])
-
-
+decide_weather  = info["decide_weather"]
+if decide_weather =='true':
+  print("fixed weather file chosen")
 if info['test'] == 'true':
    array = array[:10]
 else:
@@ -80,15 +82,15 @@ else:
 iterable_values = list(np.arange(len(array)))
 
 track_failures = []
-
+stat = info['stat']
 def MainrunforMP(index):
     #this index is gonna come from the list a
     try:
         pr = None
-        pr = configurationModule.worker(index, basefile, start, end, array)
+        pr = configurationModule.worker(index, basefile, start, end, array, fixed_weather= decide_weather)
         print(pr)
         report = None
-        report = configurationModule.runapsimx(pr, crops)
+        report = configurationModule.CollectReport(pr, stat)
         #print(report)
         return report
     except Exception as e:
@@ -121,7 +123,8 @@ def delete_weather_files(path):
 
 def save_simulation_results(result_list):
   data_df = None
-  data_df = Utilities.makedf(result_list)
+  #data_df = Utilities.makedf(result_list)
+  data_df = pd.concat(result_list)
   base_sim_path  = os.path.join(os.getcwd(), "SimulationResults")
   if not os.path.exists(base_sim_path):
           os.mkdir(base_sim_path)
@@ -138,6 +141,7 @@ cores = math.floor(mp.cpu_count() *core)
 # print(pp)
 # sys.exit()
 run_async = info['asyncro'] 
+stat = info['stat']
 data =None
 data = []
 def log_result(result):

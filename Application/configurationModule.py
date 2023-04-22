@@ -8,6 +8,7 @@ pypath_scripts = os.path.join(py_path, 'Scripts')
 sys.path.append(pypath_scripts)
 import glob
 import Utilities
+from Utilities import calculate_statistics
 import arcpy
 from multiprocessing import Pool, freeze_support
 import multiprocessing as mp
@@ -32,8 +33,10 @@ from os.path import join as opj
 import time
 import re
 from math import floor
+import warnings
+import pandas as pd
 
-
+warnings.simplefilter(action='ignore', category=FutureWarning)
 # set up logging message 
 logfile = os.path.join(os.getcwd(), 'logged_message.log')
 if os.path.exists(logfile):
@@ -61,7 +64,7 @@ def collectsoilinfo(in_raster, horizontable):
         return ar
       
       
-def worker(index, basefile, start, end, array):
+def worker(index, basefile, start, end, array, fixed_weather = None):
   try:
         basefile = basefile
         long_lat = array[index][1]
@@ -72,12 +75,14 @@ def worker(index, basefile, start, end, array):
         except ValueError as e:
           logger.exception(f"{repr(e)} at long lat: {long_lat}")
           raise
-        
-        weatherpath = daymet_bylocation(long_lat, start, end)
-        wp = Weather2(path2apsimx, weatherpath, start, end)
-        met_files = wp.ReplaceWeatherData()
-        #print(met_files)
-        return met_files
+        if not fixed_weather:
+          weatherpath = daymet_bylocation(long_lat, start, end)
+          wp = Weather2(path2apsimx, weatherpath, start, end)
+          met_files = wp.ReplaceWeatherData()
+          #print(met_files)
+          return met_files
+        else:
+          return path2apsimx
   except Exception as e:
         logger.exception(repr(e))
         raise
@@ -103,17 +108,17 @@ def Collect_for_maize_ryecover(apsimx):
         df = {}
         dat = None
         dat = runAPSIM2(apsimx)
+        lg =NoneS
         lg = len(dat['MaizeR'].Yield)
         lst = lg -1
         df['OBJECTID'] = int(dat["MaizeR"].OBJECTID.values[0])
         df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
         df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df['meanMaizeYield']= round(dat["MaizeR"].Yield.max())
+        df['meanMaizeYield']= round(dat["MaizeR"].Yield.mean())
         df['meanMaizeAGB'] =  round(dat["MaizeR"].AGB.mean())
         df['longitude'] = dat["MaizeR"].longitude.values[1]
         df["Latitude"] = dat["MaizeR"].latitude[0]
-        df["ChangeINCarbon"] = None
         df["ChangeINCarbon"]    =round(dat['Carbon1'].carbon[0])
         df["RyeBiomass"] = round(dat["WheatR"].AGB.mean())
         df["CO2"] = dat['Annual'].Top_respiration.mean()
@@ -144,7 +149,6 @@ def Collect_for_maize_soybean_ryecover(apsimx):
         df['meanMaizeAGB'] =  dat["MaizeR"].AGB.mean()
         df['longitude'] = dat["MaizeR"].longitude.values[1]
         df["Latitude"] = dat["MaizeR"].latitude[0]
-        df["ChangeINCarbon"] = None
         df["ChangeINCarbon"]    =round(dat['Carbon'].changeincarbon[0])
         df["RyeBiomass"] = round(dat["WheatR"].AGB.mean())
         df["CO2"] = round(dat['Annual'].Top_respiration.mean())
@@ -158,35 +162,37 @@ def Collect_for_maize_soybean_ryecover(apsimx):
   except Exception as e:
        logger.exception(repr(e))
        logger.exception(f"value of columns {dat.columns.names}")
-       
-CollectforMaize_only = None      
-def CollectforMaize_only(apsimx_file):
+maize_report = ['Yield', 'AGB']
+wheat_report = []
+annual  = ['Whole_repsiration', 'n20', 'TopN2O', 'SOC1', 'CumulativeAnnualLeaching', 'SOC2', 'MineralN']
+CollectforMaize_only = None  
+def calculate_statistics(dataframe: 'pandas.core.frame.DataFrame', statistic: str):
+    data = getattr(dataframe, statistic)(numeric_only = True)
+    return data
+def CollectReport(apsimx_file, stat):
   try:  
         df =None
-        df = {}
+        data = []
         dat = None
         dat = runAPSIM2(apsimx_file)
-        lg = len(dat['MaizeR'].Yield)
-        lst = lg -1
-        df['OBJECTID'] = int(dat["MaizeR"].OBJECTID.values[0])
-        df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
-        df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
-        df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
-        df['meanMaizeYield']= round(dat["MaizeR"].Yield[lst])
-        df['meanMaizeAGB'] =  round(dat["MaizeR"].AGB.mean())
-        df['longitude'] = dat["MaizeR"].longitude.values[1]
-        df["Latitude"] = dat["MaizeR"].latitude[0]
-        df["CO2"] = round(dat['Annual'].Top_respiration.mean())
-        df["meanSOC1"] = round(dat['Annual'].SOC1.mean())
-        df["meanSOC2"] = round(dat['Annual'].SOC2.mean())
-        df['meanN20'] = round(dat["MaizeR"].TopN2O.mean())
-        df["ChangeINCarbon"]    = round(dat['Carbon'].changeincarbon[0])
-        df['leached_nitrogen']  = round(dat['Annual'].CumulativeAnnualLeaching.mean())
-        df['MineralN']  = round(dat['Annual'].MineralN.mean())
-        return df
+        for i in dat.keys():
+          cal = calculate_statistics(dat[i], stat)
+          data.append(pd.DataFrame([cal]))
+        data_concat = pd.concat(data, axis = 1)
+        data_no_dup = data_concat.loc[:,~data_concat.columns.duplicated(keep='first')]
+        # add string columns
+        cp_name =dat["MaizeR"].soiltype.values[1].split(":")[0]
+        st = dat["MaizeR"].soiltype.values[1]
+        muk = dat["MaizeR"].soiltype.values[1].split(":")[1] 
+        df = pd.DataFrame({'CompName': [cp_name], 'Soiltype': [st], 'MUKEY': [muk]})
+        
+        data_full = pd.concat([df,data_no_dup], axis = 1)
+        print(data_full)
+        return data_full
   except Exception as e:
      logger.exception(repr(e))
-     logger.exception(f"value of columns {dat.columns.names}")
+     
+     #logger.exception(f"value of columns {dat.columns.names}")
      
 df =None     
 def CollectforMaize_soybean_no_rye(apsimx_file):
@@ -200,6 +206,7 @@ def CollectforMaize_soybean_no_rye(apsimx_file):
         df["CompName"] = dat["MaizeR"].soiltype.values[1].split(":")[0]
         df["Soiltype"] = dat["MaizeR"].soiltype.values[1]
         df["MUKEY"] = dat["MaizeR"].soiltype.values[1].split(":")[1]
+        df['meanMaizeYield'] = None
         df['meanMaizeYield']= round(dat["MaizeR"].Yield[lst])
         df['meanMaizeAGB'] =  round(dat["MaizeR"].AGB.mean())
         df['longitude'] = dat["MaizeR"].longitude.values[1]
@@ -219,22 +226,10 @@ def CollectforMaize_soybean_no_rye(apsimx_file):
      raise e
      
      
-def runapsimx(apsimx_file, crops): 
+def runapsimx(apsimx_file, stat): 
   
   result = None
-  if crops == "Maize, Wheat, Soybean":
-    result = Collect_for_maize_soybean_ryecover(apsimx_file)
-  elif crops == "Maize, Soybean":
-    result = None
-    result = CollectforMaize_soybean_no_rye(apsimx_file)
-  elif crops == 'Maize, Wheat':
-    result = None
-    result = Collect_for_maize_ryecover(apsimx_file)
-  elif crops == "Maize":
-    result = None
-    result = CollectforMaize_only(apsimx_file)
-  else:
-    raise AttributeError(f"Crop provided {crops} is not supported")
+  result = CollectReport(apsimx_file, stat)
   return result
   # dat = Utilities.makedf(result)
 
