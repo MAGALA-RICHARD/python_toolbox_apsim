@@ -65,7 +65,7 @@ class APSIMCropSimulationTool(object):
         """Define parameter definitions"""
         param0 = arcpy.Parameter(
             # Input workspace
-            displayName="Insert input workspace; no spaces are allowed in this directory",
+            displayName="Output: Insert input workspace; no spaces are allowed in this directory",
             name="in_workspace",
             datatype="DEWorkspace",
             parameterType="Required",
@@ -73,7 +73,7 @@ class APSIMCropSimulationTool(object):
         
         param1 = arcpy.Parameter(
             # Input workspace
-            displayName="Insert APSIMX simulation base file",
+            displayName="Input: Insert APSIMX simulation base file",
             name="apsimxbasefile",
             datatype="DEFile",
             parameterType="Required",
@@ -82,7 +82,7 @@ class APSIMCropSimulationTool(object):
         
         param2 = arcpy.Parameter(
             # Soil raster layer
-            displayName = "Insert polygon feature class for the study area (Multiple inputs are allowed)",
+            displayName = "Input: Insert polygon feature class for the study area (Multiple inputs are allowed)",
             name = 'soil_feature',
             datatype = "GPFeatureLayer",
             parameterType = "Required",
@@ -93,7 +93,7 @@ class APSIMCropSimulationTool(object):
         #param1.filter.list = ["tif"]
         param3 = arcpy.Parameter(
             # Soil raster layer
-            displayName = "Cell sampling resolution (Meters)",
+            displayName = "Input: Cell sampling resolution (Meters)",
             name = 'table_raster',
             datatype = "GPLong",
             parameterType = "Required",
@@ -102,7 +102,7 @@ class APSIMCropSimulationTool(object):
 
         param4 = arcpy.Parameter(
             # Soil raster layer
-            displayName = "Determine the cropping system (For crop rotations, crops should be written with coma seperated format following their order of rotation)",
+            displayName = "Input: Select one of the cropping systems below ",
             name = 'soil_crpping',
             datatype = "GPString",
             parameterType = "Optional",
@@ -115,7 +115,7 @@ class APSIMCropSimulationTool(object):
         
         # start year
         param5 = arcpy.Parameter(
-            displayName = "Specify The year Starting the Simulation",
+            displayName = "Input: Specify The year Starting the Simulation",
             name = 'start_year',
             datatype = "GPLong",
             parameterType = "Required",
@@ -124,7 +124,7 @@ class APSIMCropSimulationTool(object):
         
         # end year
         param6 = arcpy.Parameter(
-            displayName = "Specify The Year Ending the Simulation",
+            displayName = "Input: Specify The Year Ending the Simulation",
             name = 'end_year',
             datatype = "GPLong",
             parameterType = "Required",
@@ -132,7 +132,7 @@ class APSIMCropSimulationTool(object):
         param6.value = 2021
         # distance alagarithm
         param7 = arcpy.Parameter(
-            displayName = "Run in Asynchronous mode",
+            displayName = "Input: Run in Asynchronous mode",
             name = 'asyncro',
             datatype = "GPBoolean",
             parameterType = "Optional",
@@ -141,30 +141,29 @@ class APSIMCropSimulationTool(object):
         # output file
         # read simulation database
         param8 = arcpy.Parameter(
-            displayName = "Open default APSIM in GUI (Checked)",
-            name = 'do_scenarios',
+            displayName = "Input: Use fixed weather file throughout the watershed (Checked)",
+            name = 'weather_file',
             datatype = "GPBoolean",
             parameterType = "Optional",
-            direction = "Output")
+            direction = "Input")
                
-        # mapping field
         param9 = arcpy.Parameter(
-            displayName="Value Table",
+            displayName="Input: Open the simulated results after the simulation",
             name="valuetable",
-            datatype="GPValueTable",
+            datatype="GPBoolean",
             parameterType="Optional",
+            direction = "Input"
             
             )
-        param9.columns  = [['GPString','Cropping system scenario'], ['GPDouble', 'Proportion of each scenario']]
-        param9.filters[0].type = 'ValueList'
-        param9.filters[1].type = 'ValueList'
-        param9.filters[1].list = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.65, .07, 0.8, 0.85, 0.9, 1]#, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75 0.8, 0.85, 0.9, 1]
-        param9.filters[0].list = ['Maize', 'Maize rye', 'Maize rye Soybean', 'Maize Soybean']
         
-            
+        #param9.columns  = [['GPString','Cropping system scenario'], ['GPDouble', 'Proportion of each scenario']]
+        #param9.filters[0].type = 'ValueList'
+        #param9.filters[1].type = 'ValueList'
+        #param9.filters[1].list = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.65, .07, 0.8, 0.85, 0.9, 1]#, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75 0.8, 0.85, 0.9, 1]
+        #param9.filters[0].list = ['Maize', 'Maize rye', 'Maize rye Soybean', 'Maize Soybean']
         # param9.filters[1].list = ['ALL', 'MEAN', 'MAXIMUM', 'MINIMUM', 'RANGE', 'STD', 'SUM']
         param10 = arcpy.Parameter(
-            displayName = "Maize Tillage depth",
+            displayName = "Input: Maize Tillage depth",
             name = 'tilagedepth',
             datatype = "GPLong",
             parameterType = "Optional",
@@ -173,7 +172,7 @@ class APSIMCropSimulationTool(object):
         param10.value = 150
         param10.filter.list = [0, 1, 100, 150, 200, 250, 300, 350]
         param11 = arcpy.Parameter(
-            displayName = "Select proportion of residues to retain at site",
+            displayName = "Input: Select proportion of residues to retain at site",
             name = 'featureclass_name',
             datatype ='GPDouble',
             parameterType = "Optional",
@@ -200,7 +199,7 @@ class APSIMCropSimulationTool(object):
         param13.filter.list = ['5%', '10%',"20%", "40%", "50%", "60%", "80%", '85%', "95%", "100%"]
         
         param14 = arcpy.Parameter(
-            displayName = "Amount of Nitrogen to be applied ",
+            displayName = "Input: Amount of Nitrogen to be applied ",
             name = 'Nitrogen',
             datatype ='GPLong',
             parameterType = "Optional",
@@ -209,7 +208,7 @@ class APSIMCropSimulationTool(object):
         
 
         param15 = arcpy.Parameter(
-            displayName = "Date to apply Nitrogen to maize",
+            displayName = "Input: Date to apply Nitrogen to maize",
             name = 'date',
             datatype ='GPString',
             parameterType = "Optional",
@@ -217,14 +216,21 @@ class APSIMCropSimulationTool(object):
         param15.filter.type = "ValueList"
         param15.value = '30-may'
         param16 = arcpy.Parameter(
-            displayName = "Test whether your model inputs are correct by running a few simulations; 10 simulations/locations will be run and printed on your screen",
+            displayName = "Input: Test whether your model inputs are correct by running a few simulations; 10 simulations/locations will be run and printed on your screen",
             name = 'test',
             datatype = "GPBoolean",
             parameterType = "Optional",
             direction = "Input")
         param16.value = 'false'
-        
-        parameters = [param0, param1, param2, param3, param4,  param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16]
+        param17 = arcpy.Parameter(
+            displayName = "Input: Summary statistics for yield",
+            name = 'statistic',
+            datatype = "GPString",
+            parameterType = "Optional",
+            direction = "Input")
+        param17.value = 'mean'
+        param17.filter.list = ['mean', 'median',"min", "max", 'sum', 'std', 'last', 'first', 'cov']
+        parameters = [param0, param1, param2, param3, param4,  param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17]
         return parameters
 
     def isLicensed(self):
@@ -238,12 +244,13 @@ class APSIMCropSimulationTool(object):
         import os
         if not parameters[0].altered:
            parameters[0].defaultEnvironmentName = 'workspace'
-        if parameters[8].value == False:
-            parameters[9].enabled = 0
+        #if parameters[8].value == False:
+         #   parameters[9].enabled = 0
         # insert default apsim file
         apsm  = os.path.join(root_dir, "BaseAPSIM")
+        
         if not parameters[1].altered:
-            parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')      
+            parameters[1].value = os.path.join(apsm, 'APSIM_fileExample.apsimx')          
         pathtoC = r'C:/'
         pathtoD = r'D:/'
         if os.path.exists(pathtoC):
@@ -319,8 +326,8 @@ class APSIMCropSimulationTool(object):
             start =parameters[5].valueAsText
             end =  parameters[6].valueAsText
             asyncro= parameters[7].valueAsText
-            openfile = parameters[8].valueAsText
-            paramtable  = parameters[9].valueAsText
+            fixed_weather = parameters[8].valueAsText
+            openresults  = parameters[9].valueAsText
             depth = int(parameters[10].valueAsText)
             residue = float(parameters[11].valueAsText)
             sound = parameters[12].valueAsText
@@ -328,8 +335,10 @@ class APSIMCropSimulationTool(object):
             Nitrogen = int(parameters[14].valueAsText)
             fdate = parameters[15].valueAsText
             test = parameters[16].valueAsText
+            stat  = str(parameters[17].valueAsText)
             startyear = int(start)
             endyear = int(end)
+            
             #sys.exit(0)
             #if cmi == 'true':
                #shellvalue =True
@@ -342,8 +351,7 @@ class APSIMCropSimulationTool(object):
                 arcpy.AddMessage("APSIMX file does not exist. kill the process and try again")
             arcpy.AddMessage("*****************************************************************")
             os.chdir(root_dir)
-            if openfile == 'true':
-                os.startfile(basefile)
+            
             crops = crops.split(";")
             crop_bag = []
             crop = None
@@ -377,7 +385,6 @@ class APSIMCropSimulationTool(object):
                 files.append(apsimx_fl)
                 res_name = dt[key].replace(",", "").replace(" ", "_")
                 dictionary2bejsoned["start"] = startyear
-                dictionary2bejsoned["crops"] = None
                 dictionary2bejsoned["crops"] = dt[key]
                 dictionary2bejsoned["end"] = endyear
                 dictionary2bejsoned["Apsmx_basefile"] =apsimx_fl
@@ -387,6 +394,8 @@ class APSIMCropSimulationTool(object):
                 dictionary2bejsoned["fc"]  = watershedfc
                 dictionary2bejsoned["cell_res"]  = resolution
                 dictionary2bejsoned["test"] = test
+                dictionary2bejsoned["decide_weather"] = fixed_weather
+                dictionary2bejsoned["stat"] = stat
                 #arcpy.AddMessage(dictionary2bejsoned)
                 import json
                 arcpy.AddMessage(asyncro)
@@ -439,7 +448,6 @@ class APSIMCropSimulationTool(object):
                     #arcpy.AddMessage(stdout)
                     #arcpy.AddMessage(stderr)
                     #process = subprocess.Popen(['sys.exec_prefix', 'mainapp.py'], stdout=PIPE, stderr=PIPE)
-                    
                     #os.remove(apsimx_fl)  
                 except subprocess.CalledProcessError as scripterror:
                         arcpy.AddMessage(scripterror)
@@ -450,6 +458,8 @@ class APSIMCropSimulationTool(object):
                 results_folder = os.path.join(ws,"SimulationResults")
                 results = os.path.join(results_folder, dictionary2bejsoned['rname'])
                 fd = pd.read_csv(results)
+                if openresults == 'true':
+                 os.startfile(results)
                 arcpy.AddMessage(f'Results data frame is {fd.shape} dimesnions')
                 arcpy.AddMessage(fd)
                 #arcpy.AddMessage(fd.shape)
@@ -473,7 +483,7 @@ class APSIMCropSimulationTool(object):
                         os.mkdir(gis_results)
                       
                     '''
-                    inFeatures: feature tto join the csvfiles
+                    inFeatures: feature to join the csvfiles
                     jf: joinfield
                     infield: infield of the Infeature
                     '''

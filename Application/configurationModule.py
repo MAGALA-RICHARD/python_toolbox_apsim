@@ -8,7 +8,6 @@ pypath_scripts = os.path.join(py_path, 'Scripts')
 sys.path.append(pypath_scripts)
 import glob
 import Utilities
-from Utilities import calculate_statistics
 import arcpy
 from multiprocessing import Pool, freeze_support
 import multiprocessing as mp
@@ -64,25 +63,36 @@ def collectsoilinfo(in_raster, horizontable):
         return ar
       
       
-def worker(index, basefile, start, end, array, fixed_weather = None):
+def worker(index, basefile, start, end, array, stat, fixed_weather):
   try:
         basefile = basefile
         long_lat = array[index][1]
-        try:
-          path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
-          #print(str(array[index][4]))
+        if  fixed_weather:
+          try:
+            path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+            return path2apsimx
+            #print(str(array[index][4]))
+            # download weather data from daymet returns path2file
+          except ValueError as e:
+            logger.exception(f"{repr(e)} at long lat: {long_lat}")
+            raise
+        elif fixed_weather ==None:
+          print("we collect weather acrosss the watershed")
+          try:
+            path2apsimx = Replace_Soilprofile2(basefile, 'domtcp', long_lat, filename = str(array[index][4]), gridcode = str(array[index][4]), Objectid = str(array[index][4]), crop = None)
+            weatherpath = daymet_bylocation(long_lat, start, end)
+            wp = Weather2(path2apsimx, weatherpath, start, end)
+            met_files = wp.ReplaceWeatherData()
+            return met_files
           # download weather data from daymet returns path2file
-        except ValueError as e:
-          logger.exception(f"{repr(e)} at long lat: {long_lat}")
-          raise
-        if not fixed_weather:
-          weatherpath = daymet_bylocation(long_lat, start, end)
-          wp = Weather2(path2apsimx, weatherpath, start, end)
-          met_files = wp.ReplaceWeatherData()
+          except ValueError as e:
+            logger.exception(f"{repr(e)} at long lat: {long_lat}")
+            raise
+            weatherpath = daymet_bylocation(long_lat, start, end)
+            wp = Weather2(path2apsimx, weatherpath, start, end)
+            met_files = wp.ReplaceWeatherData()
           #print(met_files)
-          return met_files
-        else:
-          return path2apsimx
+            return met_files
   except Exception as e:
         logger.exception(repr(e))
         raise
@@ -167,28 +177,43 @@ wheat_report = []
 annual  = ['Whole_repsiration', 'n20', 'TopN2O', 'SOC1', 'CumulativeAnnualLeaching', 'SOC2', 'MineralN']
 CollectforMaize_only = None  
 def calculate_statistics(dataframe: 'pandas.core.frame.DataFrame', statistic: str):
-    data = getattr(dataframe, statistic)(numeric_only = True)
+    if statistic == 'last':
+      #data = dataframe.iloc[-1:].iloc[0]
+      data = dataframe.iloc[-1:].iloc[0]
+      #fd= dataframe
+      #data = fd[fd['Year']==end].iloc[0]
+    elif statistic == 'first':
+      data = dataframe.iloc[:1].iloc[0]
+    else:
+      data = getattr(dataframe, statistic)(numeric_only = True)
+    data = data
     return data
 def CollectReport(apsimx_file, stat):
   try:  
-        df =None
+        
         data = []
         dat = None
         dat = runAPSIM2(apsimx_file)
         for i in dat.keys():
-          cal = calculate_statistics(dat[i], stat)
-          data.append(pd.DataFrame([cal]))
-        data_concat = pd.concat(data, axis = 1)
-        data_no_dup = data_concat.loc[:,~data_concat.columns.duplicated(keep='first')]
-        # add string columns
-        cp_name =dat["MaizeR"].soiltype.values[1].split(":")[0]
-        st = dat["MaizeR"].soiltype.values[1]
-        muk = dat["MaizeR"].soiltype.values[1].split(":")[1] 
-        df = pd.DataFrame({'CompName': [cp_name], 'Soiltype': [st], 'MUKEY': [muk]})
+           cal = calculate_statistics(dat[i], stat)
+           data.append(pd.DataFrame([cal], index= [3]))
         
-        data_full = pd.concat([df,data_no_dup], axis = 1)
+        data_concat = pd.concat(data, axis = 1)
+        data_no_dup = None
+        data_no_dup = data_concat.loc[:,~data_concat.columns.duplicated(keep='first')]
+        
+        # add string columns
+        cp_name =dat["meta_data"].soiltype.values[1].split(":")[0]
+        st = dat["meta_data"].soiltype.values[1]
+        muk = dat["meta_data"].soiltype.values[1].split(":")[1]
+        lon = dat["meta_data"].Longitude.values[0]
+        lat = dat["meta_data"].Latitude.values[0]
+        daf = None
+        daf = pd.DataFrame({'CompName': [cp_name], 'Soiltype': [st], 'MUKEY': [muk], 'longitude':[lon], 'latitude':[lat]}, index= [3])
+        data_full = pd.concat([daf,data_no_dup], axis = 1)
         print(data_full)
         return data_full
+        
   except Exception as e:
      logger.exception(repr(e))
      

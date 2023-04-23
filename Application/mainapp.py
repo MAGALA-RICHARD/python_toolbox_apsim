@@ -57,6 +57,7 @@ with open(simf, "r+") as sim:
 # extract the information
 start, end, crops, rn = info['start'], info['end'], info["crops"], info["rname"]
 basefile, watershedfcl =  info["Apsmx_basefile"], info['fc']
+#basefile = r'E:\ACPd\app\python_toolbox_apsim-main\Application\BaseAPSIM\APSIM_fileExample.apsimx'
 resolution   =  info["cell_res"]
 
 print(crops)
@@ -83,20 +84,21 @@ iterable_values = list(np.arange(len(array)))
 
 track_failures = []
 stat = info['stat']
+
 def MainrunforMP(index):
     #this index is gonna come from the list a
     try:
         pr = None
-        pr = configurationModule.worker(index, basefile, start, end, array, fixed_weather= decide_weather)
+        pr = configurationModule.worker(index, basefile, start, end, array, stat = info['stat'], fixed_weather= decide_weather)
         print(pr)
         report = None
         report = configurationModule.CollectReport(pr, stat)
+        print(report)
         #print(report)
         return report
     except Exception as e:
         logger.exception(f'{repr(e)}')
   
-
 def delete_simulation_files(path):
   weather_files_path = opj(path, 'weatherdata')
   weather_files = glob.glob1(weather_files_path, 'weather_Daymet*.met')
@@ -124,7 +126,7 @@ def delete_weather_files(path):
 def save_simulation_results(result_list):
   data_df = None
   #data_df = Utilities.makedf(result_list)
-  data_df = pd.concat(result_list)
+  data_df = pd.concat(result_list, axis = 0, ignore_index = True)
   base_sim_path  = os.path.join(os.getcwd(), "SimulationResults")
   if not os.path.exists(base_sim_path):
           os.mkdir(base_sim_path)
@@ -156,7 +158,7 @@ def asyncrun_function():
       pool.join()
       save_simulation_results(data)
 if __name__ == "__main__":
-    
+    stat = info['stat']
     mp.set_executable(os.path.join(sys.exec_prefix, 'python.exe'))
     # run and replace weather files
     st = time.perf_counter()
